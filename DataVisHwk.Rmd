@@ -1,0 +1,279 @@
+---
+title: "Data Visualisation Homework"
+author: Gemma Kirkham
+output: html_notebook
+---
+
+```{r setup, echo=FALSE}
+library(tidyverse)
+```
+
+```{r}
+ggplot2::mpg
+ggplot(data=mpg)+
+  geom_point(mapping = aes(x=displ, y = hwy))
+```
+
+
+#### 3.2.4 Exercises
+
+1. 
+```{r}
+ggplot(data = mpg)
+```
+It shows a blank canvas.
+
+2.
+
+mpg has 234 rows and 11 columns.
+
+3.
+
+drv describes how the car drives. In the data f signifies a front wheel drive; r is a rear wheel drive and 4 is a 4wd drive.
+
+4.
+```{r}
+ggplot(data = mpg) +
+  geom_point(mapping = aes(x = hwy, y = cyl))
+```
+
+5.
+```{r}
+ggplot(data = mpg) +
+  geom_point(mapping = aes(x = class, y = drv))
+```
+
+This does not show any patterns it only shows what type of drive each vehicle is.
+
+####3.3.1 Exercises
+
+1.
+```{r}
+ggplot(data = mpg) + 
+  geom_point(mapping = aes(x = displ, y = hwy, color = "blue"))
+```
+
+Blue needs to be outside of the bracket. The corrected code is shown below.
+
+```{r}
+ggplot(data = mpg) + 
+  geom_point(mapping = aes(x = displ, y = hwy),color = "blue")
+```
+
+2. 
+Catergorical Variables: Manufacturer, Model name, Year of manufacture,Number of cylinders, class,drv, fuel type
+Continuous variables: Engine displacement,city miles per gallon, highway miles per gallon.
+
+You can see the data set if you run the below code. View opens it separately, or ggplot includes it in the notebook.
+
+```{r}
+View(mpg)
+ggplot2::mpg
+```
+
+
+3. 
+```{r}
+ggplot(data = mpg) +
+  geom_point(aes(x =cty, y =hwy, color = class, size = year, shape = fl))
+```
+
+4.
+```{r}
+ggplot(data = mpg) +
+  geom_point(aes(x =cty, y =hwy, color = fl, size = fl, shape = fl))
+```
+It often doesn't like mapping the same variable to multiple aeesthetics and won't always work if the variable is continuous or discrete depeding on which aesthetic is being used.
+
+
+5. Stroke modifies the width of the border.
+
+```{r}
+ggplot(mpg, aes(hwy, drv)) +
+  geom_point(shape = 21, colour = "green3", fill = "pink2", size = 3, stroke = 4)
+```
+
+
+5. 
+```{r}
+ggplot(data = mpg)+
+  geom_point(aes(x= hwy,y=cty,colour = displ<6))
+```
+
+
+It only colours some of the points.
+
+##### 3.5.1 Exercises
+
+1.
+```{r}
+ggplot(data = mpg) + 
+  geom_point(mapping = aes(x = displ, y = hwy)) + 
+  facet_wrap(~hwy,nrow = 2)
+```
+
+
+It gives lots of little graphs that won't be useful to interpret.
+
+
+2.
+```{r}
+ggplot(data = mpg) + 
+  geom_point(mapping = aes(x = drv, y = cyl))
+```
+
+The empty cells in this plot mean that no point lies in them and that all the cyl values will fall onto one of the cell lines as drv is discrete.
+
+
+3.
+
+```{r}
+ggplot(data = mpg) + 
+  geom_point(mapping = aes(x = displ, y = hwy)) +
+  facet_grid( drv~.)
+
+ggplot(data = mpg) + 
+  geom_point(mapping = aes(x = displ, y = hwy)) +
+  facet_grid(. ~ cyl)
+```
+
+The dot changes orientation of the graph.
+
+
+6.
+```{r}
+ggplot(data = mpg) + 
+  geom_point(mapping = aes(x = displ, y = hwy)) + 
+  facet_wrap(~ class, nrow = 2)
+```
+
+Easier to see how the classes compare to other vehicles in the same class. Shows trends amongst the classes. Harder to spot trends across the whole data set.
+
+
+5.
+
+ncol and nrow are the number of rows and columns.
+as.table, dir and strip.position can also be used to control the layout. No arguments because they depend on the data set and R just sorts it for you.
+
+6. Unsure.
+
+
+####3.6.1 Exercises
+1. line chart = geom_line 
+boxplot =  geom_boxplot  
+histogram =  geom_histogram  
+areachart = geom_area  
+
+
+2.
+I predict the colour will be dependent on drv, displ will be on the x axis and hwy will be on the y. I expect points with a line going through.
+
+```{r}
+ggplot(data = mpg, mapping = aes(x = displ, y = hwy, color = drv)) + 
+  geom_point() + 
+  geom_smooth(se = FALSE)
+```
+
+4. se displays the confidence interval around the line.
+
+5.
+
+They will show the exact same graph as all the arguments are the same.
+
+6. 
+```{r}
+ggplot(data = mpg, mapping = aes(x = displ, y = hwy)) + 
+  geom_point() + 
+  geom_smooth(se = FALSE)
+```
+
+```{r}
+ggplot(data = mpg, mapping = aes(x = displ, y = hwy, color = drv)) + 
+  geom_point() + 
+  geom_smooth(se = FALSE)
+```
+
+```{r}
+ggplot(data = mpg, mapping = aes(x = displ, y = hwy)) + 
+  geom_point() + 
+  geom_smooth(data = filter(mpg, drv =="f"),se = FALSE)+
+  geom_smooth(data = filter(mpg, drv =="r"),se=FALSE)+
+  geom_smooth(data = filter(mpg, drv =="4"),se = FALSE)
+              
+```
+```{r}
+ggplot(data = mpg, mapping = aes(x = displ, y = hwy, color = drv)) + 
+  geom_point() + 
+  geom_smooth(data =mpg, se= FALSE)
+```
+
+
+#### 3.7.1 Exercises
+
+1.  Default geom is pointrange.
+
+2.  geom_col() heights of the bars represent the values in the data. geom_bar makes the height of the bar proportional to the number of cases in each group.
+
+
+4.  stat_smooth computes the predicted value, ymin,ymax and the standard error. 
+
+5.
+```{r}
+ggplot(data = diamonds) + 
+  geom_bar(mapping = aes(x = cut, y = ..prop..))
+ggplot(data = diamonds) + 
+  geom_bar(mapping = aes(x = cut, fill = color, y = ..prop..))
+```
+
+
+They don't show anything.
+
+#### 3.8.1 Exercises
+
+1. 
+```{r}
+ggplot(data = mpg, mapping = aes(x = cty, y = hwy)) + 
+  geom_point()
+```
+ The graph only shows the two variables and has no added features. We could add colour to show class or another variable.
+ 
+ 2.  Width and height.
+ 
+ 3.  Geom_jitter adds a small amount of variation to the location of each point whereas geom_count counts the numbers of variables at each location then maps the count to point area.
+ 
+ 4. Default is "dodge2".
+ 
+
+```{r}
+ggplot(data=mpg)+
+geom_boxplot(aes(x= year, y =cty))
+```
+ 
+#### 3.9.1 Exercises
+ 
+ 1. 
+```{r}
+bar<-ggplot(data=mpg)+
+  geom_bar(mapping = aes(x=class))
+bar+coord_polar()
+```
+2.  labs add labels to your plot and add a title.
+ 
+ 
+ 3. coord_quickmap sets the aspect ratio correctly for maps.
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
